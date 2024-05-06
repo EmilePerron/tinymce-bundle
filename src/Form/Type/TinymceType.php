@@ -1,8 +1,8 @@
 <?php
 
-namespace Eckinox\TinymceBundle\Form\Type;
+namespace EmilePerron\TinymceBundle\Form\Type;
 
-use Eckinox\TinymceBundle\Util\TinymceConfigurator;
+use EmilePerron\TinymceBundle\Util\TinymceConfigurator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\OptionsResolver\OptionsResolver;

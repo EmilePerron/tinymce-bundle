@@ -1,6 +1,6 @@
 <?php
 
-namespace Eckinox\TinymceBundle\DependencyInjection;
+namespace EmilePerron\TinymceBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

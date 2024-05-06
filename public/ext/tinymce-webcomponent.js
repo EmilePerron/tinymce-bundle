@@ -91,6 +91,17 @@
       Status[Status['Initializing'] = 1] = 'Initializing';
       Status[Status['Ready'] = 2] = 'Ready';
     }(Status || (Status = {})));
+    const closestRecursive = (selector, element) => {
+      const found = element.closest(selector);
+      if (found !== null) {
+        return found;
+      }
+      const next = element.getRootNode().host;
+      if (next !== null && next !== undefined) {
+        return closestRecursive(selector, next);
+      }
+      return null;
+    };
     const isLookupKey = (values, key) => has(values, key);
     const lookup = values => key => isLookupKey(values, key) ? values[key] : key;
     const parseGlobal = resolve;
@@ -103,6 +114,7 @@
     const parseNumberOrString = value => /^\d+$/.test(value) ? Number.parseInt(value, 10) : value;
     const configAttributes = {
       setup: parseGlobal,
+      statusbar: parseBooleanOrString,
       toolbar: parseFalseOrString,
       menubar: parseFalseOrString,
       plugins: parseString,
@@ -126,36 +138,11 @@
       images_upload_credentials: parseBooleanOrString,
       images_reuse_filename: parseBooleanOrString,
       icons: parseString,
-      icons_url: parseString
+      icons_url: parseString,
+      promotion: parseBooleanOrString
     };
     const configRenames = {};
     class TinyMceEditor extends HTMLElement {
-      constructor() {
-        super();
-        this._eventAttrHandler = records => {
-          records.forEach(record => {
-            var _a;
-            if (record.type === 'attributes' && record.target === this && ((_a = record.attributeName) === null || _a === void 0 ? void 0 : _a.toLowerCase().startsWith('on-'))) {
-              this._updateEventAttr(record.attributeName, this.getAttribute(record.attributeName));
-            }
-          });
-        };
-        this._formDataHandler = evt => {
-          const name = this.name;
-          if (name != null) {
-            const value = this.value;
-            if (value != null) {
-              const data = evt.formData;
-              data.append(name, value);
-            }
-          }
-        };
-        this._status = Status.Raw;
-        this._shadowDom = this.attachShadow({ mode: 'open' });
-        this._form = null;
-        this._eventHandlers = {};
-        this._mutationObserver = new MutationObserver(this._eventAttrHandler);
-      }
       static get formAssociated() {
         return true;
       }
@@ -233,6 +220,32 @@
           'placeholder'
         ].concat(nativeEvents).concat(tinyEvents);
       }
+      constructor() {
+        super();
+        this._eventAttrHandler = records => {
+          records.forEach(record => {
+            var _a;
+            if (record.type === 'attributes' && record.target === this && ((_a = record.attributeName) === null || _a === void 0 ? void 0 : _a.toLowerCase().startsWith('on-'))) {
+              this._updateEventAttr(record.attributeName, this.getAttribute(record.attributeName));
+            }
+          });
+        };
+        this._formDataHandler = evt => {
+          const name = this.name;
+          if (name != null) {
+            const value = this.value;
+            if (value != null) {
+              const data = evt.formData;
+              data.append(name, value);
+            }
+          }
+        };
+        this._status = Status.Raw;
+        this._shadowDom = this.attachShadow({ mode: 'open' });
+        this._form = null;
+        this._eventHandlers = {};
+        this._mutationObserver = new MutationObserver(this._eventAttrHandler);
+      }
       _updateEventAttr(attrKey, attrValue) {
         const event = attrKey.substring('on-'.length).toLowerCase();
         const resolved = attrValue !== null ? resolve(attrValue) : undefined;
@@ -254,7 +267,7 @@
       _updateForm() {
         if (this.isConnected) {
           const formId = this.getAttribute('form');
-          const form = formId !== null ? this.ownerDocument.querySelector('form#' + formId) : this.closest('form');
+          const form = formId !== null ? this.ownerDocument.querySelector('form#' + formId) : closestRecursive('form', this);
           if (this._form !== form) {
             if (this._form !== null) {
               this._form.removeEventListener('formdata', this._formDataHandler);
@@ -313,10 +326,14 @@
         return handlers;
       }
       _doInit() {
-        var _a;
+        var _a, _b;
         this._status = Status.Initializing;
         const target = document.createElement('textarea');
         target.value = (_a = this.textContent) !== null && _a !== void 0 ? _a : '';
+        const attrId = (_b = this.attributes.getNamedItem('id')) === null || _b === void 0 ? void 0 : _b.value;
+        if (attrId) {
+          target.id = attrId;
+        }
         if (this.placeholder !== null) {
           target.placeholder = this.placeholder;
         }

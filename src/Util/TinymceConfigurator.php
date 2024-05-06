@@ -1,6 +1,6 @@
 <?php
 
-namespace Eckinox\TinymceBundle\Util;
+namespace EmilePerron\TinymceBundle\Util;
 
 use Symfony\Component\Routing\RouterInterface;
 

@@ -1,11 +1,16 @@
 # TinyMCE for your Symfony apps and forms
 
+This is a fork of [eckinox/tinymce-bundle](https://github.com/eckinox/tinymce-bundle).
+Both packages were created by myself, but since I left Eckinox the original 
+bundle has been treated more like an internal package rather than a public &
+open-source package, so I created this fork to keep supporting the community.
+
 ## Getting started
 
 ### 1. Install this package via Composer
 
 ```bash
-composer require eckinox/tinymce-bundle
+composer require emileperron/tinymce-bundle
 ```
 
 ### 2. Start using TinyMCE!
@@ -156,12 +161,13 @@ tinymce:
 
 | Bundle version | TinyMCE version | TinyMCE Web Component version |
 |----------------|-----------------|-------------------------------|
-| **1.0**        | 6.0.2           | 2.0.0                         |
+| **1.2**        | 6.8.3           | 2.1.0                         |
+| For prior versions, refer to [eckinox/tinymce-bundle](https://github.com/eckinox/tinymce-bundle) |
 
 
 ## Contributing
 
-Feel free to submit issues and PRs to the [eckinox/tinymce-bundle](https://github.com/eckinox/tinymce-bundle) repository on GitHub.
+Feel free to submit issues and PRs to the [emileperron/tinymce-bundle](https://github.com/EmilePerron/tinymce-bundle) repository on GitHub.
 
 For more information on how to contribute, check out [CONTRIBUTING.md](./CONTRIBUTING.md).
 

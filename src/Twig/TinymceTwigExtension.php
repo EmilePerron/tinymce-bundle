@@ -1,8 +1,8 @@
 <?php
 
-namespace Eckinox\TinymceBundle\Twig;
+namespace EmilePerron\TinymceBundle\Twig;
 
-use Eckinox\TinymceBundle\Util\TinymceConfigurator;
+use EmilePerron\TinymceBundle\Util\TinymceConfigurator;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\Markup;
