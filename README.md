@@ -1,11 +1,16 @@
 # TinyMCE for your Symfony apps and forms
 
+This is a fork of [eckinox/tinymce-bundle](https://github.com/eckinox/tinymce-bundle).
+Both packages were created by myself, but since I left Eckinox the original 
+bundle has been treated more like an internal package rather than a public &
+open-source package, so I created this fork to keep supporting the community.
+
 ## Getting started
 
 ### 1. Install this package via Composer
 
 ```bash
-composer require eckinox/tinymce-bundle
+composer require emileperron/tinymce-bundle
 ```
 
 ### 2. Start using TinyMCE!
@@ -72,6 +77,15 @@ const editor = document.createElement("tinymce-editor");
 editor.append(contentText);
 editor.setAttribute("skin", "appstack");
 
+// If you want to use your default configurations, uncomment this
+/*
+const attrs = {{ tinymce_attributes({ menubar: "format" })|json_encode|raw }};
+
+for (const key in attrs) {
+	editor.setAttribute(key, attrs[key]);
+}
+*/
+
 // Add the editor to the page
 document.body.append(editor);
 ```
@@ -112,19 +126,47 @@ tinymce:
     # The configurations mirror the TinyMCE attributes.
     # Learn more about each option in Tiny's documentation: 
     # https://www.tiny.cloud/docs/tinymce/6/webcomponent-ref/
-    skin: "oxide"
-    content_css: "default"
+		skin: "oxide"
+		content_css: "default"
+		content_style: ""
     plugins: "advlist autolink link image media table lists"
     toolbar: "bold italic underline | bullist numlist"
+		toolbar_mode: ""
+		menubar: ""
+		contextmenu: ""
+		quickbars_insert_toolbar: ""
+		quickbars_selection_toolbar: ""
+		resize: ""
+		icons: ""
+		icons_url: ""
+		setup: ""
     images_upload_url: "https://yoursite.com/upload"
-    images_upload_route: "" # Name of the route for `images_upload_url` (leave `images_upload_url` blank if using this)
-    images_upload_route_params: "" # Parameters of the route for `images_upload_url` (leave `images_upload_url` blank if using this)
-    images_upload_handler: ""
-    images_upload_base_path: ""
-    images_upload_credentials: "true"
-    images_reuse_filename: ""
+		images_upload_route: ""
+		images_upload_route_params: ""
+		images_upload_handler: ""
+		images_upload_base_path: ""
+		images_upload_credentials: "true"
+		images_reuse_filename: ""
+		powerpaste_word_import: ""
+		powerpaste_html_import: ""
+		powerpaste_allow_local_images: ""
 ```
 
+#### Using your configuration in Twig templates
+
+If you need to use your configurations in a Twig template, you can use the 
+`tinymce_attributes()` function, which accepts an optional array of custom 
+attributes that take priority over the default configuration.
+
+Here is an example:
+
+```js
+const attrs = {{ tinymce_attributes({ menubar: "format" })|json_encode|raw }};
+
+for (const key in attrs) {
+	editor.setAttribute(key, attrs[key]);
+}
+```
 
 ### File uploads (optional)
 
@@ -156,13 +198,13 @@ tinymce:
 
 | Bundle version | TinyMCE version | TinyMCE Web Component version |
 |----------------|-----------------|-------------------------------|
-| **1.1**        | 6.8.2           | 2.0.2                         |
-| **1.0**        | 6.0.2           | 2.0.0                         |
+| **2.0**        | 6.8.3           | 2.1.0                         |
+| For prior versions, refer to [eckinox/tinymce-bundle](https://github.com/eckinox/tinymce-bundle) |
 
 
 ## Contributing
 
-Feel free to submit issues and PRs to the [eckinox/tinymce-bundle](https://github.com/eckinox/tinymce-bundle) repository on GitHub.
+Feel free to submit issues and PRs to the [emileperron/tinymce-bundle](https://github.com/EmilePerron/tinymce-bundle) repository on GitHub.
 
 For more information on how to contribute, check out [CONTRIBUTING.md](./CONTRIBUTING.md).
 

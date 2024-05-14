@@ -1,6 +1,6 @@
 <?php
 
-namespace Eckinox\TinymceBundle;
+namespace EmilePerron\TinymceBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
