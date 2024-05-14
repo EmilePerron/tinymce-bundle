@@ -15,7 +15,8 @@
 	"scripts": {
 		"php-cs-fixer": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -vvv --dry-run --using-cache=no",
 		"phpmd": "vendor/phpmd/phpmd/src/bin/phpmd src text .phpmd.xml",
-		"phpstan": "vendor/bin/phpstan analyse -n"
+		"phpstan": "vendor/bin/phpstan analyse -n",
+		"test": "npx playwright test"
 	},
     "autoload": {
         "psr-4": {
