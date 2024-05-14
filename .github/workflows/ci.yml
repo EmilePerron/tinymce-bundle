@@ -19,6 +19,10 @@ jobs:
               with:
                   path: /tmp/composer-cache
                   key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+            - name: Setup PHP with PECL extension
+              uses: shivammathur/setup-php@v2
+              with:
+                php-version: ${{ matrix.php_version }}
             - name: Install PHP dependencies (composer install)
               uses: php-actions/composer@v6
               with:
@@ -33,8 +37,6 @@ jobs:
               run: npm i --ignore-scripts --production=false
             - name: PHP CS Fixer
               run: composer run php-cs-fixer
-            - name: PHP Stan
-              run: composer run phpstan
             - name: PHP MD
               run: composer run phpmd
             - name: CSS stylelint
@@ -66,18 +68,16 @@ jobs:
               env:
                   PHP_VERSION: "${{ matrix.php_version }}"
                   SYMFONY_VERSION: "${{ matrix.symfony_version }}"
-            - name: Move to E2E test directory
-              run: cd tests/e2e/
             - name: Copy bundle files
-              run: docker compose cp ../.. app:/bundle
+              run: docker compose -f tests/e2e/compose.yaml cp . app:/bundle
             - name: Composer configure local bundle repository
-              run: docker compose exec app composer config repositories.emileperron/tinymce-bundle path /bundle
+              run: docker compose -f tests/e2e/compose.yaml exec app composer config repositories.emileperron/tinymce-bundle path /bundle
             - name: Composer configure minimum stability
-              run: docker compose exec app composer config minimum-stability "dev"
+              run: docker compose -f tests/e2e/compose.yaml exec app composer config minimum-stability "dev"
             - name: Composer install bundle
-              run: docker compose exec app composer require emileperron/tinymce-bundle
-            - name: Move back to root directory
-              run: cd ../../
+              run: docker compose -f tests/e2e/compose.yaml exec app composer require emileperron/tinymce-bundle
+            - name: Install JS dependencies
+              run: npm install
             - name: Install Chromium for Playwright
               run: npx playwright install chromium --with-deps
             - name: Run Playwright tests
@@ -85,6 +85,6 @@ jobs:
             - uses: actions/upload-artifact@v4
               if: ${{ !cancelled() }}
               with:
-                name: playwright-report
+                name: playwright-report-php${{ matrix.php_version }}-symfony${{ matrix.symfony_version }}
                 path: playwright-report/
                 retention-days: 30

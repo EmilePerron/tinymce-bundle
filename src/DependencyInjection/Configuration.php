@@ -2,6 +2,7 @@
 
 namespace EmilePerron\TinymceBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -15,6 +16,7 @@ class Configuration implements ConfigurationInterface
 	public function getConfigTreeBuilder(): TreeBuilder
 	{
 		$treeBuilder = new TreeBuilder('tinymce');
+		/** @var ArrayNodeDefinition $rootNode */
 		$rootNode = $treeBuilder->getRootNode();
 
 		// Here you should define the parameters that are allowed to
@@ -35,6 +37,7 @@ class Configuration implements ConfigurationInterface
 				->scalarNode('resize')->end()
 				->scalarNode('icons')->end()
 				->scalarNode('icons_url')->end()
+				->scalarNode('setup')->end()
 				->scalarNode('images_upload_url')->end()
 				->scalarNode('images_upload_route')->end()
 				->arrayNode('images_upload_route_params')->end()

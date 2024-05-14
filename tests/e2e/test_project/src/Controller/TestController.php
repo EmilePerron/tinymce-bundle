@@ -30,7 +30,7 @@ class TestController extends AbstractController
 		$form = $this->createFormBuilder($initialData)
 			->add('comment', TinymceType::class, [
 				'attr' => [
-					'toolbar' => 'bold underline | bullist numlist',
+					'menubar' => 'format',
 				],
 			])
 			->add('submit', SubmitType::class)

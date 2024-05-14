@@ -139,6 +139,7 @@ tinymce:
 		resize: ""
 		icons: ""
 		icons_url: ""
+		setup: ""
     images_upload_url: "https://yoursite.com/upload"
 		images_upload_route: ""
 		images_upload_route_params: ""
@@ -197,7 +198,7 @@ tinymce:
 
 | Bundle version | TinyMCE version | TinyMCE Web Component version |
 |----------------|-----------------|-------------------------------|
-| **1.2**        | 6.8.3           | 2.1.0                         |
+| **2.0**        | 6.8.3           | 2.1.0                         |
 | For prior versions, refer to [eckinox/tinymce-bundle](https://github.com/eckinox/tinymce-bundle) |
 
 
