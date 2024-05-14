@@ -11,26 +11,27 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class TestController extends AbstractController
 {
-    #[Route('/test/template')]
-    public function template(): Response
-    {
-        return $this->render("template.html.twig");
-    }
-    #[Route('/test/javascript')]
-    public function javascript(): Response
-    {
-        return $this->render("javascript.html.twig");
-    }
+	#[Route('/test/template')]
+	public function template(): Response
+	{
+		return $this->render('template.html.twig');
+	}
 
-    #[Route('/test/form')]
-    public function form(Request $request): Response
-    {
+	#[Route('/test/javascript')]
+	public function javascript(): Response
+	{
+		return $this->render('javascript.html.twig');
+	}
+
+	#[Route('/test/form')]
+	public function form(Request $request): Response
+	{
 		$initialData = ['comment' => '<p>Initial text value</p>'];
-        $form = $this->createFormBuilder($initialData)
+		$form = $this->createFormBuilder($initialData)
 			->add('comment', TinymceType::class, [
-				"attr" => [
-					"toolbar" => "bold underline | bullist numlist",
-				]
+				'attr' => [
+					'toolbar' => 'bold underline | bullist numlist',
+				],
 			])
 			->add('submit', SubmitType::class)
 			->getForm();
@@ -45,8 +46,8 @@ class TestController extends AbstractController
 			");
 		}
 
-        return $this->render("form.html.twig", [
-            'form' => $form->createView(),
-        ]);
-    }
+		return $this->render('form.html.twig', [
+			'form' => $form->createView(),
+		]);
+	}
 }

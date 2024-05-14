@@ -36,8 +36,8 @@ class TinymceExtension extends Extension implements PrependExtensionInterface
 	{
 		$container->prependExtensionConfig('twig', [
 			'form_themes' => [
-				'@Tinymce/form/tinymce_type.html.twig'
-			]
+				'@Tinymce/form/tinymce_type.html.twig',
+			],
 		]);
 	}
 }

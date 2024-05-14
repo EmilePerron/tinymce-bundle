@@ -12,8 +12,7 @@ class TinymceTwigExtension extends AbstractExtension
 {
 	public function __construct(
 		private TinymceConfigurator $tinymceConfigurator,
-	)
-	{
+	) {
 	}
 
 	/**
@@ -30,9 +29,10 @@ class TinymceTwigExtension extends AbstractExtension
 
 	/**
 	 * Merges the provided attributes with the default attributes defined in
-	 * the configuration
+	 * the configuration.
 	 *
 	 * @param array<string,string> $customAttributes
+	 *
 	 * @return array<string,string> The merged attributes as a key => value array
 	 */
 	public function tinymceAttributes(array $customAttributes = []): array
@@ -58,7 +58,7 @@ class TinymceTwigExtension extends AbstractExtension
 	 */
 	public function tinymceEditor(Environment $environment, mixed $data, array $customAttributes = []): Markup
 	{
-		$htmlAttributes = "";
+		$htmlAttributes = '';
 
 		foreach ($this->tinymceAttributes($customAttributes) as $key => $value) {
 			$htmlAttributes .= "$key=\"$value\" ";
@@ -66,7 +66,7 @@ class TinymceTwigExtension extends AbstractExtension
 
 		$elementHtml = $environment->render('@Tinymce/twig/tinymce_editor.html.twig', [
 			'data' => $data,
-			'attributes' => new Markup($htmlAttributes, "utf-8")
+			'attributes' => new Markup($htmlAttributes, 'utf-8'),
 		]);
 
 		return new Markup($elementHtml, 'utf-8');
