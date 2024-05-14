@@ -1,4 +1,4 @@
-name: Coding Standards
+name: CI/CD
 
 on:
     push:
@@ -42,11 +42,11 @@ jobs:
             - name: ESLint
               run: npm run lint:js
 
-    tests:
+    unit-tests:
         strategy:
             matrix:
                 php_version: ["8.0", "8.1", "8.2", "8.3"]
-        name: Coding standards
+        name: Unit tests
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
@@ -64,3 +64,50 @@ jobs:
                 args: --no-plugins
             - name: PHPUnit
               run: composer run test
+
+    e2e-tests:
+        strategy:
+            matrix:
+                php_version: ["8.0", "8.1", "8.2", "8.3"]
+                symfony_version: ["6.4", "7.0"]
+        name: E2E tests
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Cache Composer dependencies
+              uses: actions/cache@v2
+              with:
+                  path: /tmp/composer-cache
+                  key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+            - uses: actions/setup-node@v4
+              with:
+                node-version: 18
+            - uses: hoverkraft-tech/compose-action@v0.0.0
+              with:
+                  compose-file: "tests/e2e/compose.yaml"
+              env:
+                  PHP_VERSION: "${{ matrix.php_version }}"
+                  SYMFONY_VERSION: "${{ matrix.symfony_version }}"
+            - name: Move to E2E test directory
+              run: cd tests/e2e/
+            - name: Copy bundle files
+              run: docker compose cp ../.. app:/bundle
+            - name: Composer configure local bundle repository
+              run: docker compose exec app composer config repositories.emileperron/tinymce-bundle path /bundle
+            - name: Composer configure minimum stability
+              run: docker compose exec app composer config minimum-stability "dev"
+            - name: Composer install bundle
+              run: docker compose exec app composer require emileperron/tinymce-bundle
+            - name: Move back to root directory
+              run: cd ../../
+            - name: Install Chromium for Playwright
+              run: npx playwright install chromium --with-deps
+            - name: Run Playwright tests
+              run: npx playwright test
+            - uses: actions/upload-artifact@v4
+              if: ${{ !cancelled() }}
+              with:
+                name: playwright-report
+                path: playwright-report/
+                retention-days: 30

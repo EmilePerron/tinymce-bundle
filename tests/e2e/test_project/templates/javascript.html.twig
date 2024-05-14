@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+		<title>TinyMCE via Javascript</title>
+    </head>
+    <body>
+		{{ tinymce_scripts() }}
+		<script>
+			const contentText = document.createTextNode("<p>Initial text value</p>");
+			const editor = document.createElement("tinymce-editor");
+			const attrs = {{ tinymce_attributes({ menubar: "format" })|json_encode|raw }};
+
+			for (const key in attrs) {
+				editor.setAttribute(key, attrs[key]);
+			}
+
+			editor.append(contentText);
+
+			// Add the editor to the page
+			document.body.append(editor);
+		</script>
+    </body>
+</html>

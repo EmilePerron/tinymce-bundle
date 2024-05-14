@@ -2,6 +2,7 @@
 
 namespace EmilePerron\TinymceBundle\DependencyInjection;
 
+use EmilePerron\TinymceBundle\Util\TinymceConfigurator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -27,7 +28,7 @@ class TinymceExtension extends Extension implements PrependExtensionInterface
 		$tinymceConfig = $this->processConfiguration($configuration, $configs);
 
 		$container
-			->getDefinition('EmilePerron\TinymceBundle\Util\TinymceConfigurator')
+			->getDefinition(TinymceConfigurator::class)
 			->addArgument($tinymceConfig);
 	}
 

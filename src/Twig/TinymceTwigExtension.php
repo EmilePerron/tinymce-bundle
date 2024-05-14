@@ -24,28 +24,22 @@ class TinymceTwigExtension extends AbstractExtension
 		return [
 			new TwigFunction('tinymce', [$this, 'tinymceEditor'], ['needs_environment' => true]),
 			new TwigFunction('tinymce_scripts', [$this, 'tinymceScripts'], ['needs_environment' => true]),
+			new TwigFunction('tinymce_attributes', [$this, 'tinymceAttributes']),
 		];
 	}
 
 	/**
+	 * Merges the provided attributes with the default attributes defined in
+	 * the configuration
+	 *
 	 * @param array<string,string> $customAttributes
+	 * @return array<string,string> The merged attributes as a key => value array
 	 */
-	public function tinymceEditor(Environment $environment, mixed $data, array $customAttributes = []): Markup
+	public function tinymceAttributes(array $customAttributes = []): array
 	{
 		$globalAttributes = $this->tinymceConfigurator->getGlobalAttributes();
-		$attributes = array_merge($globalAttributes, $customAttributes);
-		$htmlAttributes = "";
 
-		foreach ($attributes as $key => $value) {
-			$htmlAttributes .= "$key=\"$value\" ";
-		}
-
-		$elementHtml = $environment->render('@Tinymce/twig/tinymce_editor.html.twig', [
-			'data' => $data,
-			'attributes' => new Markup($htmlAttributes, "utf-8")
-		]);
-
-		return new Markup($elementHtml, 'utf-8');
+		return array_merge($globalAttributes, $customAttributes);
 	}
 
 	/**
@@ -55,6 +49,25 @@ class TinymceTwigExtension extends AbstractExtension
 	public function tinymceScripts(Environment $environment): Markup
 	{
 		$elementHtml = $environment->render('@Tinymce/twig/tinymce_scripts.html.twig');
+
+		return new Markup($elementHtml, 'utf-8');
+	}
+
+	/**
+	 * @param array<string,string> $customAttributes
+	 */
+	public function tinymceEditor(Environment $environment, mixed $data, array $customAttributes = []): Markup
+	{
+		$htmlAttributes = "";
+
+		foreach ($this->tinymceAttributes($customAttributes) as $key => $value) {
+			$htmlAttributes .= "$key=\"$value\" ";
+		}
+
+		$elementHtml = $environment->render('@Tinymce/twig/tinymce_editor.html.twig', [
+			'data' => $data,
+			'attributes' => new Markup($htmlAttributes, "utf-8")
+		]);
 
 		return new Markup($elementHtml, 'utf-8');
 	}

@@ -24,8 +24,17 @@ class Configuration implements ConfigurationInterface
 			->children()
 				->scalarNode('skin')->end()
 				->scalarNode('content_css')->end()
+				->scalarNode('content_style')->end()
 				->scalarNode('plugins')->end()
 				->scalarNode('toolbar')->end()
+				->scalarNode('toolbar_mode')->end()
+				->scalarNode('menubar')->end()
+				->scalarNode('contextmenu')->end()
+				->scalarNode('quickbars_insert_toolbar')->end()
+				->scalarNode('quickbars_selection_toolbar')->end()
+				->scalarNode('resize')->end()
+				->scalarNode('icons')->end()
+				->scalarNode('icons_url')->end()
 				->scalarNode('images_upload_url')->end()
 				->scalarNode('images_upload_route')->end()
 				->arrayNode('images_upload_route_params')->end()
@@ -33,6 +42,9 @@ class Configuration implements ConfigurationInterface
 				->scalarNode('images_upload_base_path')->end()
 				->scalarNode('images_upload_credentials')->end()
 				->scalarNode('images_reuse_filename')->end()
+				->scalarNode('powerpaste_word_import')->end()
+				->scalarNode('powerpaste_html_import')->end()
+				->scalarNode('powerpaste_allow_local_images')->end()
 			->end();
 
 		return $treeBuilder;
