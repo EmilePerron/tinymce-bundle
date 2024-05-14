@@ -1,0 +1,90 @@
+name: CI/CD
+
+on:
+    push:
+    pull_request:
+
+jobs:
+    coding-standards:
+        strategy:
+            matrix:
+                php_version: ["8.1", "8.2", "8.3"]
+        name: Coding standards
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Cache Composer dependencies
+              uses: actions/cache@v2
+              with:
+                  path: /tmp/composer-cache
+                  key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+            - name: Setup PHP with PECL extension
+              uses: shivammathur/setup-php@v2
+              with:
+                php-version: ${{ matrix.php_version }}
+            - name: Install PHP dependencies (composer install)
+              uses: php-actions/composer@v6
+              with:
+                php_version: ${{ matrix.php_version }}
+                php_extensions: xsl intl
+                args: --no-plugins
+            - name: Use Node.js 12.x
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 12.x
+            - name: Install JS dependencies (npm install)
+              run: npm i --ignore-scripts --production=false
+            - name: PHP CS Fixer
+              run: composer run php-cs-fixer
+            - name: PHP MD
+              run: composer run phpmd
+            - name: CSS stylelint
+              run: npm run lint:css
+            - name: ESLint
+              run: npm run lint:js
+
+    e2e-tests:
+        strategy:
+            matrix:
+                php_version: ["8.2", "8.3"]
+                symfony_version: ["6.4", "7.0"]
+        name: E2E tests
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Cache Composer dependencies
+              uses: actions/cache@v2
+              with:
+                  path: /tmp/composer-cache
+                  key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+            - uses: actions/setup-node@v4
+              with:
+                node-version: 18
+            - uses: hoverkraft-tech/compose-action@v2.0.0
+              with:
+                  compose-file: "tests/e2e/compose.yaml"
+              env:
+                  PHP_VERSION: "${{ matrix.php_version }}"
+                  SYMFONY_VERSION: "${{ matrix.symfony_version }}"
+            - name: Copy bundle files
+              run: docker compose -f tests/e2e/compose.yaml cp . app:/bundle
+            - name: Composer configure local bundle repository
+              run: docker compose -f tests/e2e/compose.yaml exec app composer config repositories.emileperron/tinymce-bundle path /bundle
+            - name: Composer configure minimum stability
+              run: docker compose -f tests/e2e/compose.yaml exec app composer config minimum-stability "dev"
+            - name: Composer install bundle
+              run: docker compose -f tests/e2e/compose.yaml exec app composer require emileperron/tinymce-bundle
+            - name: Install JS dependencies
+              run: npm install
+            - name: Install Chromium for Playwright
+              run: npx playwright install chromium --with-deps
+            - name: Run Playwright tests
+              run: npx playwright test
+            - uses: actions/upload-artifact@v4
+              if: ${{ !cancelled() }}
+              with:
+                name: playwright-report-php${{ matrix.php_version }}-symfony${{ matrix.symfony_version }}
+                path: playwright-report/
+                retention-days: 30

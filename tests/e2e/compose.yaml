@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+        context: .
+        args:
+            PHP_VERSION: ${PHP_VERSION:-8.3}
+            SYMFONY_VERSION: ${SYMFONY_VERSION:-7.0}
+    command: php -S 0.0.0.0:80 -t /app/public
+    ports:
+      - "80:80"

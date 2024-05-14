@@ -114,6 +114,7 @@
     const parseNumberOrString = value => /^\d+$/.test(value) ? Number.parseInt(value, 10) : value;
     const configAttributes = {
       setup: parseGlobal,
+      statusbar: parseBooleanOrString,
       toolbar: parseFalseOrString,
       menubar: parseFalseOrString,
       plugins: parseString,
@@ -325,10 +326,14 @@
         return handlers;
       }
       _doInit() {
-        var _a;
+        var _a, _b;
         this._status = Status.Initializing;
         const target = document.createElement('textarea');
         target.value = (_a = this.textContent) !== null && _a !== void 0 ? _a : '';
+        const attrId = (_b = this.attributes.getNamedItem('id')) === null || _b === void 0 ? void 0 : _b.value;
+        if (attrId) {
+          target.id = attrId;
+        }
         if (this.placeholder !== null) {
           target.placeholder = this.placeholder;
         }

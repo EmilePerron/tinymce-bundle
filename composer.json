@@ -1,9 +1,9 @@
 {
-    "name": "eckinox/tinymce-bundle",
+    "name": "emileperron/tinymce-bundle",
     "description": "A Symfony bundle to add TinyMCE in your apps and forms.",
     "type": "symfony-bundle",
     "require": {
-		"php": "^8.0",
+		"php": "^8.1",
         "symfony/asset": "^4.0|^5.0|^6.0|^7.0",
         "symfony/http-foundation": "^4.0|^5.0|^6.0|^7.0",
         "symfony/http-kernel": "^4.0|^5.0|^6.0|^7.0",
@@ -12,12 +12,16 @@
         "symfony/routing": "^4.0|^5.0|^6.0|^7.0",
         "twig/twig": "^3.3"
     },
-    "require-dev": {
-        "eckinox/eckinox-cs": "^2.0"
-    },
+	"scripts": {
+		"php-cs-fixer": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -vvv --dry-run --using-cache=no",
+		"php-cs-fixer:fix": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -vvv --using-cache=no",
+		"phpmd": "vendor/phpmd/phpmd/src/bin/phpmd src text .phpmd.xml",
+		"phpstan": "vendor/bin/phpstan analyse -n",
+		"test": "npx playwright test"
+	},
     "autoload": {
         "psr-4": {
-            "Eckinox\\TinymceBundle\\": "src/"
+            "EmilePerron\\TinymceBundle\\": "src/"
         }
     },
     "authors": [
@@ -28,8 +32,16 @@
     ],
     "config": {
         "allow-plugins": {
-            "phpstan/extension-installer": true,
-            "eckinox/installer-plugin": true
+            "phpstan/extension-installer": true
         }
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.55",
+        "vincentlanglet/twig-cs-fixer": "^2.8",
+        "phpmd/phpmd": "^2.15",
+        "phpstan/phpstan": "^1.10",
+        "phpstan/extension-installer": "^1.3",
+        "phpstan/phpstan-symfony": "^1.3",
+        "phpunit/phpunit": "^9.16|^10.5|^11.1"
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Eckinox\TinymceBundle\Util;
+namespace EmilePerron\TinymceBundle\Util;
 
 use Symfony\Component\Routing\RouterInterface;
 
@@ -32,7 +32,7 @@ class TinymceConfigurator
         if ($this->globalAttributes === null) {
             $userAttributes = $this->processUserConfig($this->userConfig);
             $attributes = array_merge($this->getDefaultAttributes(), $userAttributes);
-            $this->globalAttributes = array_filter($attributes, fn($value) => $value != "");
+            $this->globalAttributes = array_filter($attributes, fn($value) => $value != '');
         }
 
         return $this->globalAttributes;
@@ -47,16 +47,16 @@ class TinymceConfigurator
      */
     private function processUserConfig(array $config): array
     {
-        if (empty($config["images_upload_url"]) && !empty($config["images_upload_route"])) {
-            $config["images_upload_url"] = $this->router->generate(
-                $config["images_upload_route"],
-                $config["images_upload_route_params"] ?? [],
-                RouterInterface::ABSOLUTE_URL
+        if (empty($config['images_upload_url']) && !empty($config['images_upload_route'])) {
+            $config['images_upload_url'] = $this->router->generate(
+                $config['images_upload_route'],
+                $config['images_upload_route_params'] ?? [],
+                RouterInterface::ABSOLUTE_URL,
             );
         }
 
-        unset($config["images_upload_route"]);
-        unset($config["images_upload_route_params"]);
+        unset($config['images_upload_route']);
+        unset($config['images_upload_route_params']);
 
         return $config;
     }
@@ -67,11 +67,11 @@ class TinymceConfigurator
     private function getDefaultAttributes(): array
     {
         return [
-            'plugins' => "advlist autolink link image media table lists",
-            'menubar' => "false",
-            'toolbar' => "bold italic underline | bullist numlist | table quickimage link",
-            'height' => "12em",
-            'images_upload_credentials' => "true",
+            'plugins' => 'advlist autolink link image media table lists',
+            'menubar' => 'false',
+            'toolbar' => 'bold italic underline | bullist numlist | table quickimage link',
+            'height' => '12em',
+            'images_upload_credentials' => 'true',
         ];
     }
 }

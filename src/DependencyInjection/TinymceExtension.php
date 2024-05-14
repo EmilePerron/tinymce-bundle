@@ -1,8 +1,8 @@
 <?php
 
-namespace Eckinox\TinymceBundle\DependencyInjection;
+namespace EmilePerron\TinymceBundle\DependencyInjection;
 
-use Eckinox\TinymceBundle\Util\TinymceConfigurator;
+use EmilePerron\TinymceBundle\Util\TinymceConfigurator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;

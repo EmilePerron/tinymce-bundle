@@ -2,8 +2,3 @@ parameters:
 	level: 6
 	paths:
 		- src
-	symfony:
-		container_xml_path:
-	ignoreErrors:
-		- '#Unable to resolve the template type TMaybeContained#'
-	reportUnmatchedIgnoredErrors: false

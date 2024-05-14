@@ -21,5 +21,15 @@ cp -r public/skins/content/* public/ext/tinymce/skins/content
 
 ## Coding standards
 
-This project uses the coding standards and linting tools defined by [eckinox/eckinox-cs](https://github.com/eckinox/eckinox-cs).
+Codign standards checks are run in the CI/CD pipelines.
 
+You can also run these checks locally with the following commands:
+
+- `composer run php-cs-fixer`
+- `composer run phpstan`
+- `composer run phpmd`
+- `npm run lint:css`
+- `npm run lint:js`
+
+For more information about the actual standards, please refer to each tool's
+configuration file(s).
