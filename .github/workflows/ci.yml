@@ -8,7 +8,7 @@ jobs:
     coding-standards:
         strategy:
             matrix:
-                php_version: ["8.0", "8.1", "8.2", "8.3"]
+                php_version: ["8.1", "8.2", "8.3"]
         name: Coding standards
         runs-on: ubuntu-latest
         steps:
@@ -45,7 +45,7 @@ jobs:
     unit-tests:
         strategy:
             matrix:
-                php_version: ["8.0", "8.1", "8.2", "8.3"]
+                php_version: ["8.1", "8.2", "8.3"]
         name: Unit tests
         runs-on: ubuntu-latest
         steps:
@@ -68,7 +68,7 @@ jobs:
     e2e-tests:
         strategy:
             matrix:
-                php_version: ["8.0", "8.1", "8.2", "8.3"]
+                php_version: ["8.1", "8.2", "8.3"]
                 symfony_version: ["6.4", "7.0"]
         name: E2E tests
         runs-on: ubuntu-latest

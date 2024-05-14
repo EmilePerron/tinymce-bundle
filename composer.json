@@ -3,7 +3,7 @@
     "description": "A Symfony bundle to add TinyMCE in your apps and forms.",
     "type": "symfony-bundle",
     "require": {
-		"php": "^8.0",
+		"php": "^8.1",
         "symfony/asset": "^4.0|^5.0|^6.0|^7.0",
         "symfony/http-foundation": "^4.0|^5.0|^6.0|^7.0",
         "symfony/http-kernel": "^4.0|^5.0|^6.0|^7.0",
