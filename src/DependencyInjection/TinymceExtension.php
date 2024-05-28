@@ -37,5 +37,15 @@ class TinymceExtension extends Extension implements PrependExtensionInterface
                 '@Tinymce/form/tinymce_type.html.twig',
             ],
         ]);
+
+        if (class_exists(\Symfony\Component\AssetMapper\AssetMapper::class)) {
+            $container->prependExtensionConfig('framework', [
+                'asset_mapper' => [
+                    'excluded_patterns' => [
+                        '**/emileperron/tinymce-bundle/**',
+                    ],
+                ],
+            ]);
+        }
     }
 }

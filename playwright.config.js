@@ -6,7 +6,8 @@ export default defineConfig({
 	reporter: 'html',
 	use: {
 		baseURL: 'http://localhost',
-		trace: 'on-first-retry',
+		trace: 'retain-on-failure',
+		video: 'retain-on-failure',
 	},
 	projects: [
 		{
