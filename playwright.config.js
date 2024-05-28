@@ -7,6 +7,7 @@ export default defineConfig({
 	use: {
 		baseURL: 'http://localhost',
 		trace: 'on-first-retry',
+		video: 'retain-on-failure',
 	},
 	projects: [
 		{
@@ -14,4 +15,5 @@ export default defineConfig({
 			use: { ...devices['Desktop Chrome'] },
 		},
 	],
+
 });
