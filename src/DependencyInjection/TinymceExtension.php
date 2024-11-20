@@ -42,7 +42,8 @@ class TinymceExtension extends Extension implements PrependExtensionInterface
             $container->prependExtensionConfig('framework', [
                 'asset_mapper' => [
                     'excluded_patterns' => [
-                        '**/emileperron/tinymce-bundle/**',
+                        '**/tinymce**',
+                        '**/skins/*/appstack**',
                     ],
                 ],
             ]);
