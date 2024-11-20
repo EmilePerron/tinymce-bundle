@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.8.5 (TBD)
+ * TinyMCE version 7.5.1 (TBD)
  */
 
 (function () {
@@ -76,12 +76,14 @@
       editor.ui.registry.addButton('preview', {
         icon: 'preview',
         tooltip: 'Preview',
-        onAction
+        onAction,
+        context: 'any'
       });
       editor.ui.registry.addMenuItem('preview', {
         icon: 'preview',
         text: 'Preview',
-        onAction
+        onAction,
+        context: 'any'
       });
     };
 

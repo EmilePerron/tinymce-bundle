@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
 		$rootNode
 			->children()
 				->scalarNode('skin')->end()
+				->scalarNode('config')->end()
 				->scalarNode('content_css')->end()
 				->scalarNode('content_style')->end()
 				->scalarNode('plugins')->end()

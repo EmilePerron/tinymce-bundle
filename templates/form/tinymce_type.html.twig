@@ -8,5 +8,6 @@
 		{% endwith %}
 		src="{{ asset('bundles/tinymce/ext/tinymce/tinymce.min.js') }}"
 		>{{ value }}</tinymce-editor>
+	<script src="{{ asset('bundles/tinymce/default-tinymce-config.js') }}" type="module"></script>
 	<script src="{{ asset('bundles/tinymce/ext/tinymce-webcomponent.js') }}" type="module"></script>
 {%- endblock -%}

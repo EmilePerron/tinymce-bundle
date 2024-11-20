@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.8.5 (TBD)
+ * TinyMCE version 7.5.1 (TBD)
  */
 
 (function () {
@@ -162,7 +162,7 @@
     const isWithinNonEditable = (editor, element) => element !== null && !editor.dom.isEditable(element);
     const isWithinNonEditableList = (editor, element) => {
       const parentList = editor.dom.getParent(element, 'ol,ul,dl');
-      return isWithinNonEditable(editor, parentList) && editor.selection.isEditable();
+      return isWithinNonEditable(editor, parentList) || !editor.selection.isEditable();
     };
     const setNodeChangeHandler = (editor, nodeChangeHandler) => {
       const initialNode = editor.selection.getNode();
@@ -184,7 +184,7 @@
       const updateButtonState = (editor, parents) => {
         const element = editor.selection.getStart(true);
         api.setActive(inList(editor, parents, nodeName));
-        api.setEnabled(!isWithinNonEditableList(editor, element) && editor.selection.isEditable());
+        api.setEnabled(!isWithinNonEditableList(editor, element));
       };
       const nodeChangeHandler = e => updateButtonState(editor, e.parents);
       return setNodeChangeHandler(editor, nodeChangeHandler);
@@ -249,7 +249,7 @@
           register(editor);
           register$2(editor);
         } else {
-          console.error('Please use the Lists plugin together with the Advanced List plugin.');
+          console.error('Please use the Lists plugin together with the List Styles plugin.');
         }
       });
     };

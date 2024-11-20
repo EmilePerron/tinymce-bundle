@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.8.5 (TBD)
+ * TinyMCE version 7.5.1 (TBD)
  */
 
 (function () {
@@ -7,13 +7,15 @@
 
     var global$4 = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
+    const random = () => window.crypto.getRandomValues(new Uint32Array(1))[0] / 4294967295;
+
     let unique = 0;
     const generate = prefix => {
       const date = new Date();
       const time = date.getTime();
-      const random = Math.floor(Math.random() * 1000000000);
+      const random$1 = Math.floor(random() * 1000000000);
       unique++;
-      return prefix + '_' + random + unique + String(time);
+      return prefix + '_' + random$1 + unique + String(time);
     };
 
     const hasProto = (v, constructor, predicate) => {
@@ -348,8 +350,7 @@
     const firstChild = element => child(element, 0);
 
     const isShadowRoot = dos => isDocumentFragment(dos) && isNonNullable(dos.dom.host);
-    const supported = isFunction(Element.prototype.attachShadow) && isFunction(Node.prototype.getRootNode);
-    const getRootNode = supported ? e => SugarElement.fromDom(e.dom.getRootNode()) : documentOrOwner;
+    const getRootNode = e => SugarElement.fromDom(e.dom.getRootNode());
     const getShadowRoot = e => {
       const r = getRootNode(e);
       return isShadowRoot(r) ? Optional.some(r) : Optional.none();
@@ -748,7 +749,7 @@
       const rng = editor.selection.getRng();
       return isDetails(rng.startContainer) && rng.collapsed && rng.startOffset === 0;
     };
-    const isInsertAllowed = editor => !isInSummary(editor) && editor.dom.isEditable(editor.selection.getNode());
+    const isInsertAllowed = editor => !isInSummary(editor) && editor.dom.isEditable(editor.selection.getNode()) && !editor.mode.isReadOnly();
     const getSelectedDetails = editor => Optional.from(editor.dom.getParent(editor.selection.getNode(), isDetails));
     const isDetailsSelected = editor => getSelectedDetails(editor).isSome();
     const insertBogus = element => {
@@ -828,16 +829,18 @@
       });
     };
     const removeAccordion = editor => {
-      getSelectedDetails(editor).each(details => {
-        const {nextSibling} = details;
-        if (nextSibling) {
-          editor.selection.select(nextSibling, true);
-          editor.selection.collapse(true);
-        } else {
-          insertAndSelectParagraphAfter(editor, details);
-        }
-        details.remove();
-      });
+      if (!editor.mode.isReadOnly()) {
+        getSelectedDetails(editor).each(details => {
+          const {nextSibling} = details;
+          if (nextSibling) {
+            editor.selection.select(nextSibling, true);
+            editor.selection.collapse(true);
+          } else {
+            insertAndSelectParagraphAfter(editor, details);
+          }
+          details.remove();
+        });
+      }
     };
     const toggleAllAccordions = (editor, state) => {
       const accordions = Array.from(editor.getBody().querySelectorAll('details'));

@@ -126,30 +126,31 @@ tinymce:
     # The configurations mirror the TinyMCE attributes.
     # Learn more about each option in Tiny's documentation: 
     # https://www.tiny.cloud/docs/tinymce/6/webcomponent-ref/
-		skin: "oxide"
-		content_css: "default"
-		content_style: ""
+    skin: "oxide"
+    content_css: "default"
+    content_style: ""
+    config: "tinymceAdditionalConfig"
     plugins: "advlist autolink link image media table lists"
     toolbar: "bold italic underline | bullist numlist"
-		toolbar_mode: ""
-		menubar: ""
-		contextmenu: ""
-		quickbars_insert_toolbar: ""
-		quickbars_selection_toolbar: ""
-		resize: ""
-		icons: ""
-		icons_url: ""
-		setup: ""
+    toolbar_mode: ""
+    menubar: ""
+    contextmenu: ""
+    quickbars_insert_toolbar: ""
+    quickbars_selection_toolbar: ""
+    resize: ""
+    icons: ""
+    icons_url: ""
+    setup: ""
     images_upload_url: "https://yoursite.com/upload"
-		images_upload_route: ""
-		images_upload_route_params: ""
-		images_upload_handler: ""
-		images_upload_base_path: ""
-		images_upload_credentials: "true"
-		images_reuse_filename: ""
-		powerpaste_word_import: ""
-		powerpaste_html_import: ""
-		powerpaste_allow_local_images: ""
+    images_upload_route: ""
+    images_upload_route_params: ""
+    images_upload_handler: ""
+    images_upload_base_path: ""
+    images_upload_credentials: "true"
+    images_reuse_filename: ""
+    powerpaste_word_import: ""
+    powerpaste_html_import: ""
+    powerpaste_allow_local_images: ""
 ```
 
 #### Using your configuration in Twig templates
@@ -177,6 +178,18 @@ To set this up, take a look at [Tiny's web component file upload documentation](
 To help you get started, we have provided an example of what the implementation may look like. 
 You can find this example in [`docs/file-upload-example.md`](./docs/file-upload-example.md).
 
+## Commercial TinyMCE License Key
+
+By default, this bundle sets you up to use the GPL licensed version of TinyMCE.
+
+If you have a commercial license that you would like to use instead, you must 
+provide the `license_key` to the global TinyMCE configuration extras, like so:
+
+```js
+window.tinymceAdditionalConfig = {
+	license_key: "<your-license-key-here>",
+};
+```
 
 ## AssetMapper support
 
@@ -209,6 +222,7 @@ tinymce:
 
 | Bundle version | TinyMCE version | TinyMCE Web Component version |
 |----------------|-----------------|-------------------------------|
+| **3.0**        | 7.5.1           | 2.1.0                         |
 | **2.1**        | 6.8.5           | 2.1.0                         |
 | **2.0**        | 6.8.3           | 2.1.0                         |
 | For prior versions, refer to [eckinox/tinymce-bundle](https://github.com/eckinox/tinymce-bundle) |
