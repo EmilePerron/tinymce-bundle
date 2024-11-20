@@ -178,6 +178,13 @@ To help you get started, we have provided an example of what the implementation 
 You can find this example in [`docs/file-upload-example.md`](./docs/file-upload-example.md).
 
 
+## AssetMapper support
+
+Support for Symfony's AssetMapper is built-in to this bundle since v2.1.
+
+No additional configuration is required.
+
+
 ## AppStack skin
 
 This bundle comes with an `appstack` skin, which matches the style of the 
