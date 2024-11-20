@@ -205,6 +205,7 @@ tinymce:
 
 | Bundle version | TinyMCE version | TinyMCE Web Component version |
 |----------------|-----------------|-------------------------------|
+| **2.1**        | 6.8.5           | 2.1.0                         |
 | **2.0**        | 6.8.3           | 2.1.0                         |
 | For prior versions, refer to [eckinox/tinymce-bundle](https://github.com/eckinox/tinymce-bundle) |
 
