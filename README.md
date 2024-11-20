@@ -180,9 +180,13 @@ You can find this example in [`docs/file-upload-example.md`](./docs/file-upload-
 
 ## AssetMapper support
 
-Support for Symfony's AssetMapper is built-in to this bundle since v2.1.
+Support for Symfony's AssetMapper is built-in to this bundle since v2.1. No 
+additional configuration is required on your end.
 
-No additional configuration is required.
+When AssetMapper is used, the TinyMCE files are automatically excluded from
+being compiled as part of Asset Mapper, as the versioning hash that Asset 
+Mapper automatically adds to filenames and URLs is incompatible with the
+runtime script imports that are core to TinyMCE.
 
 
 ## AppStack skin
