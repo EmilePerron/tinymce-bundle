@@ -178,6 +178,17 @@ To help you get started, we have provided an example of what the implementation 
 You can find this example in [`docs/file-upload-example.md`](./docs/file-upload-example.md).
 
 
+## AssetMapper support
+
+Support for Symfony's AssetMapper is built-in to this bundle since v2.1. No 
+additional configuration is required on your end.
+
+When AssetMapper is used, the TinyMCE files are automatically excluded from
+being compiled as part of Asset Mapper, as the versioning hash that Asset 
+Mapper automatically adds to filenames and URLs is incompatible with the
+runtime script imports that are core to TinyMCE.
+
+
 ## AppStack skin
 
 This bundle comes with an `appstack` skin, which matches the style of the 
@@ -198,6 +209,7 @@ tinymce:
 
 | Bundle version | TinyMCE version | TinyMCE Web Component version |
 |----------------|-----------------|-------------------------------|
+| **2.1**        | 6.8.5           | 2.1.0                         |
 | **2.0**        | 6.8.3           | 2.1.0                         |
 | For prior versions, refer to [eckinox/tinymce-bundle](https://github.com/eckinox/tinymce-bundle) |
 
