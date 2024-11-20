@@ -72,6 +72,7 @@ class TinymceConfigurator
             'toolbar' => 'bold italic underline | bullist numlist | table quickimage link',
             'height' => '12em',
             'images_upload_credentials' => 'true',
+            'config' => 'tinymceAdditionalConfig',
         ];
     }
 }

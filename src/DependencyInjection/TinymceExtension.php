@@ -42,7 +42,7 @@ class TinymceExtension extends Extension implements PrependExtensionInterface
             $container->prependExtensionConfig('framework', [
                 'asset_mapper' => [
                     'excluded_patterns' => [
-                        '**/tinymce**',
+                        '**/**tinymce**',
                         '**/skins/*/appstack**',
                     ],
                 ],
