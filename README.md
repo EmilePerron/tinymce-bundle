@@ -153,7 +153,42 @@ tinymce:
     powerpaste_allow_local_images: ""
 ```
 
-#### Using your configuration in Twig templates
+### Setting Additional Configuration Options
+
+This bundle uses the Web Component version of TinyMCE, which only supports a 
+limited subset of TinyMCE's configuration options via attributes (as seen in
+the default configuration above).
+
+To add more configuration options that aren't available via attributes on the
+web component, you need to define a global configuration variable in Javascript
+and point TinyMCE to that variable, as described in the official TinyMCE docs: 
+[Setting Additional Configuration Options](https://www.tiny.cloud/docs/tinymce/6/webcomponent-ref/#setting-additional-configuration-options).
+
+In practice with this bundle, this looks like:
+
+- Adding a script that defines your additional configuration in a global 
+  variable, like so:
+  ```html
+  <script>
+      window.tinymceConfig = {
+          browser_spellcheck: true,
+          contextmenu: false,
+      };
+  </script>
+  ```
+- Setting the `config` option in `tinymce.yaml` to the name of your variable, 
+  like so:
+  ```yaml
+  tinymce:
+    config: "tinymceConfig"
+  ```
+
+If you want to provide different additional configuration for different TinyMCE 
+fields, you can also set the `config` attribute within your FormBuilder field 
+or Twig Template instead of doing so in your `tinymce.yaml` configuration file.
+
+
+### Using your configuration in Twig templates
 
 If you need to use your configurations in a Twig template, you can use the 
 `tinymce_attributes()` function, which accepts an optional array of custom 
