@@ -1,7 +1,7 @@
 # TinyMCE for your Symfony apps and forms
 
 This is a fork of [eckinox/tinymce-bundle](https://github.com/eckinox/tinymce-bundle).
-Both packages were created by myself, but since I left Eckinox the original 
+Both packages were created by myself, but since I left Eckinox the original
 bundle has been treated more like an internal package rather than a public &
 open-source package, so I created this fork to keep supporting the community.
 
@@ -21,6 +21,8 @@ Adding a TinyMCE editor in your Symfony forms works like any other form types:
 
 
 ```php
+use EmilePerron\TinymceBundle\Form\Type\TinymceType;
+
 public function buildForm(FormBuilderInterface $builder, array $options): void
 {
     $builder->add("comment", TinymceType::class, [
@@ -33,7 +35,7 @@ public function buildForm(FormBuilderInterface $builder, array $options): void
 
 #### Using TinyMCE in templates
 
-To render a TinyMCE editor in Twig without using Symfony forms, you can use the 
+To render a TinyMCE editor in Twig without using Symfony forms, you can use the
 `tinymce()` Twig function that is provided by this bundle.
 
 Simply provide the value as the first argument and you're good to go.
@@ -49,7 +51,7 @@ Here is an example:
 #### Using TinyMCE in Javascript
 
 To render a TinyMCE editor in Javascript, first ensure that the main TinyMCE script
-is loaded. 
+is loaded.
 
 If you already use the `tinymce()` Twig function or the `TinymceType` on the page,
 the scripts are already loaded. Otherwise, you can include them on the page either
@@ -90,20 +92,22 @@ for (const key in attrs) {
 document.body.append(editor);
 ```
 
-You can refer to [Tiny's web component documentation](https://www.tiny.cloud/docs/tinymce/6/webcomponent-ref) 
+You can refer to [Tiny's web component documentation](https://www.tiny.cloud/docs/tinymce/6/webcomponent-ref)
 for more information.
 
 
 ## Configuring TinyMCE
 
-This bundle includes and uses the web component version of TinyMCE. 
+This bundle includes and uses the web component version of TinyMCE.
 
 You can configure TinyMCE by setting HTML attributes on the editor element itself (`<tinymce-editor>`).
 
-When using the form type, you can use the `attr` option to set the attributes.  
+When using the form type, you can use the `attr` option to set the attributes.
 For example, you can set the toolbar's actions like so:
 
 ```php
+use EmilePerron\TinymceBundle\Form\Type\TinymceType;
+
 public function buildForm(FormBuilderInterface $builder, array $options): void
 {
     $builder->add("comment", TinymceType::class, [
@@ -114,7 +118,7 @@ public function buildForm(FormBuilderInterface $builder, array $options): void
     // ...
 ```
 
-For more information on the different configurations that TinyMCE offers, refer 
+For more information on the different configurations that TinyMCE offers, refer
 to [Tiny's web component documentation](https://www.tiny.cloud/docs/tinymce/6/webcomponent-ref/).
 
 ### Default configurations
@@ -124,7 +128,7 @@ You can set the following default options in a configuration file:
 ```yaml
 tinymce:
     # The configurations mirror the TinyMCE attributes.
-    # Learn more about each option in Tiny's documentation: 
+    # Learn more about each option in Tiny's documentation:
     # https://www.tiny.cloud/docs/tinymce/6/webcomponent-ref/
     skin: "oxide"
     content_css: "default"
@@ -143,7 +147,7 @@ tinymce:
     setup: ""
     images_upload_url: "https://yoursite.com/upload"
     images_upload_route: ""
-    images_upload_route_params: ""
+    images_upload_route_params: []
     images_upload_handler: ""
     images_upload_base_path: ""
     images_upload_credentials: "true"
@@ -190,8 +194,8 @@ or Twig Template instead of doing so in your `tinymce.yaml` configuration file.
 
 ### Using your configuration in Twig templates
 
-If you need to use your configurations in a Twig template, you can use the 
-`tinymce_attributes()` function, which accepts an optional array of custom 
+If you need to use your configurations in a Twig template, you can use the
+`tinymce_attributes()` function, which accepts an optional array of custom
 attributes that take priority over the default configuration.
 
 Here is an example:
@@ -210,14 +214,14 @@ File uploads are not handled by default, as the process will vary from project t
 
 To set this up, take a look at [Tiny's web component file upload documentation](https://www.tiny.cloud/docs/tinymce/6/webcomponent-ref/#setting-the-images-upload-url).
 
-To help you get started, we have provided an example of what the implementation may look like. 
+To help you get started, we have provided an example of what the implementation may look like.
 You can find this example in [`docs/file-upload-example.md`](./docs/file-upload-example.md).
 
 ## Commercial TinyMCE License Key
 
 By default, this bundle sets you up to use the GPL licensed version of TinyMCE.
 
-If you have a commercial license that you would like to use instead, you must 
+If you have a commercial license that you would like to use instead, you must
 provide the `license_key` to the global TinyMCE configuration extras, like so:
 
 ```js
@@ -228,19 +232,19 @@ window.tinymceAdditionalConfig = {
 
 ## AssetMapper support
 
-Support for Symfony's AssetMapper is built-in to this bundle since v2.1. No 
+Support for Symfony's AssetMapper is built-in to this bundle since v2.1. No
 additional configuration is required on your end.
 
 When AssetMapper is used, the TinyMCE files are automatically excluded from
-being compiled as part of Asset Mapper, as the versioning hash that Asset 
+being compiled as part of Asset Mapper, as the versioning hash that Asset
 Mapper automatically adds to filenames and URLs is incompatible with the
 runtime script imports that are core to TinyMCE.
 
 
 ## AppStack skin
 
-This bundle comes with an `appstack` skin, which matches the style of the 
-[AppStack Bootstrap template](https://appstack-bs5.bootlab.io/index.html). 
+This bundle comes with an `appstack` skin, which matches the style of the
+[AppStack Bootstrap template](https://appstack-bs5.bootlab.io/index.html).
 
 This skin is an extension of the tinymce-5, and it has dark mode support built-in.
 
