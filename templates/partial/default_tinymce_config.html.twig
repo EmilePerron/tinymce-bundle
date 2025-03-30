@@ -1,5 +1,5 @@
 {% set config_var = tinymce_config_variable_name() %}
-<script type="module">
+<script>
 	if (typeof window.{{ config_var }} === 'undefined') {
 		window.{{ config_var }} = {};
 	}
