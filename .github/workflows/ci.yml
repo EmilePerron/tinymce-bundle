@@ -8,7 +8,7 @@ jobs:
     coding-standards:
         strategy:
             matrix:
-                php_version: ["8.1", "8.2", "8.3"]
+                php_version: ["8.1", "8.2", "8.3", "8.4"]
         name: Coding standards
         runs-on: ubuntu-latest
         steps:
@@ -18,7 +18,7 @@ jobs:
               uses: actions/cache@v4
               with:
                   path: /tmp/composer-cache
-                  key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+                  key: ${{ runner.os }}-${{ hashFiles('**/composer.json') }}
             - name: Setup PHP with PECL extension
               uses: shivammathur/setup-php@v2
               with:
@@ -36,7 +36,7 @@ jobs:
             - name: Install JS dependencies (npm install)
               run: npm i --ignore-scripts --production=false
             - name: PHP CS Fixer
-              run: composer run php-cs-fixer
+              run: PHP_CS_FIXER_IGNORE_ENV=1 composer run php-cs-fixer
             - name: PHP MD
               run: composer run phpmd
             - name: CSS stylelint
@@ -47,8 +47,8 @@ jobs:
     e2e-tests:
         strategy:
             matrix:
-                php_version: ["8.2", "8.3"]
-                symfony_version: ["6.4", "7.0"]
+                php_version: ["8.2", "8.3", "8.4"]
+                symfony_version: ["6.4", "7.0", "7.1", "7.2"]
         name: E2E tests
         runs-on: ubuntu-latest
         steps:
@@ -58,7 +58,7 @@ jobs:
               uses: actions/cache@v4
               with:
                   path: /tmp/composer-cache
-                  key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+                  key: ${{ runner.os }}-${{ hashFiles('**/composer.json') }}
             - uses: actions/setup-node@v4
               with:
                 node-version: 18
