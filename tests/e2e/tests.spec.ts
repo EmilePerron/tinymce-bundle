@@ -14,7 +14,7 @@ test.describe('With Javascript', () => {
 		await expect(page.locator('button').filter({ hasText: 'Format' })).toBeVisible();
 
 		// Update the content and submit the form
-		await page.frameLocator('iframe[title="Rich Text Area"]').getByLabel('Rich Text Area. Press ALT-0').fill('Initial text value has been updated!');
+		await page.frameLocator('iframe[title="Rich Text Area"]').getByLabel('Rich Text Area').fill('Initial text value has been updated!');
 		await page.getByRole('button', { name: 'Submit' }).click();
 
 		// Validate form data is received correctly
