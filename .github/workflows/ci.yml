@@ -36,7 +36,7 @@ jobs:
             - name: Install JS dependencies (npm install)
               run: npm i --ignore-scripts --production=false
             - name: PHP CS Fixer
-              run: composer run php-cs-fixer
+              run: PHP_CS_FIXER_IGNORE_ENV=1 composer run php-cs-fixer
             - name: PHP MD
               run: composer run phpmd
             - name: CSS stylelint
