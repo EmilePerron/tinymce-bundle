@@ -23,6 +23,7 @@ class TinymceTwigExtension extends AbstractExtension
             new TwigFunction('tinymce', [$this, 'tinymceEditor'], ['needs_environment' => true]),
             new TwigFunction('tinymce_scripts', [$this, 'tinymceScripts'], ['needs_environment' => true]),
             new TwigFunction('tinymce_attributes', [$this, 'tinymceAttributes']),
+            new TwigFunction('tinymce_config_variable_name', [$this, 'tinymceConfigVariableName']),
         ];
     }
 
@@ -69,5 +70,13 @@ class TinymceTwigExtension extends AbstractExtension
         ]);
 
         return new Markup($elementHtml, 'utf-8');
+    }
+
+    /**
+     * Returns the Javascript variable name for additional TinyMCE configurations.
+     */
+    public function tinymceConfigVariableName(): string
+    {
+        return $this->tinymceConfigurator->getGlobalAttributes()['config'] ?? 'tinymceAdditionalConfig';
     }
 }
