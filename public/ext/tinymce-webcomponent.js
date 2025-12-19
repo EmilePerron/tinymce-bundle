@@ -85,6 +85,49 @@
     };
     const ScriptLoader = CreateScriptLoader();
 
+    const toInt = str => parseInt(str, 10);
+    const cmp = (a, b) => {
+      const delta = a - b;
+      if (delta === 0) {
+        return 0;
+      }
+      return delta > 0 ? 1 : -1;
+    };
+    const nu = (major, minor, patch) => ({
+      major,
+      minor,
+      patch
+    });
+    const parse = versionString => {
+      const parts = /([0-9]+)\.([0-9]+)\.([0-9]+)(?:(\-.+)?)/.exec(versionString);
+      return parts ? nu(toInt(parts[1]), toInt(parts[2]), toInt(parts[3])) : nu(0, 0, 0);
+    };
+    const compare = (version1, version2) => {
+      const cmp1 = cmp(version1.major, version2.major);
+      if (cmp1 !== 0) {
+        return cmp1;
+      }
+      const cmp2 = cmp(version1.minor, version2.minor);
+      if (cmp2 !== 0) {
+        return cmp2;
+      }
+      const cmp3 = cmp(version1.patch, version2.patch);
+      if (cmp3 !== 0) {
+        return cmp3;
+      }
+      return 0;
+    };
+
+    const createSemVer = tinymce => {
+      const semver = [
+        tinymce.majorVersion,
+        tinymce.minorVersion
+      ].join('.');
+      return semver.split('.').slice(0, 3).join('.');
+    };
+    const getVersion = tinymce => parse(createSemVer(tinymce));
+    const isLessThan = (tinymce, version) => !tinymce ? false : compare(getVersion(tinymce), parse(version)) === -1;
+
     var Status;
     (function (Status) {
       Status[Status['Raw'] = 0] = 'Raw';
@@ -106,10 +149,10 @@
     const lookup = values => key => isLookupKey(values, key) ? values[key] : key;
     const parseGlobal = resolve;
     const parseString = identity;
-    const parseFalseOrString = lookup({ 'false': false });
+    const parseFalseOrString = lookup({ false: false });
     const parseBooleanOrString = lookup({
-      'true': true,
-      'false': false
+      true: true,
+      false: false
     });
     const parseNumberOrString = value => /^\d+$/.test(value) ? Number.parseInt(value, 10) : value;
     const configAttributes = {
@@ -142,6 +185,7 @@
       promotion: parseBooleanOrString
     };
     const configRenames = {};
+    const isDisabledOptionSupported = tinymce => !isLessThan(tinymce, '7.6.0');
     class TinyMceEditor extends HTMLElement {
       static get formAssociated() {
         return true;
@@ -217,7 +261,8 @@
           'form',
           'readonly',
           'autofocus',
-          'placeholder'
+          'placeholder',
+          'disabled'
         ].concat(nativeEvents).concat(tinyEvents);
       }
       constructor() {
@@ -302,6 +347,9 @@
         if (this.readonly) {
           config.readonly = true;
         }
+        if (this.disabled) {
+          config.disabled = true;
+        }
         if (this.autofocus) {
           config.auto_focus = true;
         }
@@ -339,7 +387,10 @@
         }
         this._shadowDom.appendChild(target);
         const baseConfig = this._getConfig();
-        const conf = Object.assign(Object.assign({}, baseConfig), {
+        const conf = Object.assign(Object.assign(Object.assign({}, baseConfig), {
+          disabled: this.hasAttribute('disabled'),
+          readonly: this.hasAttribute('readonly')
+        }), {
           target,
           setup: editor => {
             this._editor = editor;
@@ -348,6 +399,9 @@
             });
             editor.on('SwitchMode', _e => {
               this.readonly = this.readonly;
+            });
+            editor.on('DisabledStateChange', _e => {
+              this.disabled = this.disabled;
             });
             each(this._eventHandlers, (handler, event) => {
               if (handler !== undefined) {
@@ -359,7 +413,9 @@
             }
           }
         });
-        this._getTinymce().init(conf);
+        this._getTinymce().init(conf).catch(err => {
+          console.error('TinyMCE init failed', err);
+        });
       }
       _getTinymceSrc() {
         var _a;
@@ -367,7 +423,7 @@
         if (src) {
           return src;
         }
-        const channel = (_a = this.getAttribute('channel')) !== null && _a !== void 0 ? _a : '6';
+        const channel = (_a = this.getAttribute('channel')) !== null && _a !== void 0 ? _a : '8';
         const apiKey = this.hasAttribute('api-key') ? this.getAttribute('api-key') : 'no-api-key';
         return `https://cdn.tiny.cloud/1/${ apiKey }/tinymce/${ channel }/tinymce.min.js`;
       }
@@ -382,6 +438,8 @@
         if (oldValue !== newValue) {
           if (attribute === 'form') {
             this._updateForm();
+          } else if (attribute === 'disabled') {
+            this.disabled = newValue !== null;
           } else if (attribute === 'readonly') {
             this.readonly = newValue !== null;
           } else if (attribute === 'autofocus') {
@@ -408,6 +466,9 @@
       disconnectedCallback() {
         this._mutationObserver.disconnect();
         this._updateForm();
+        if (this._editor) {
+          this._getTinymce().remove(this._editor);
+        }
       }
       get value() {
         var _a, _b;
@@ -441,6 +502,22 @@
           if (this.hasAttribute('readonly')) {
             this.removeAttribute('readonly');
           }
+        }
+      }
+      get disabled() {
+        return this._editor ? this._editor.options.get('disabled') : this.hasAttribute('disabled');
+      }
+      set disabled(value) {
+        var _a;
+        const tinymce = (_a = this._getTinymce) === null || _a === void 0 ? void 0 : _a.call(this);
+        const isVersionNewer = tinymce ? isDisabledOptionSupported(tinymce) : true;
+        if (this._editor && this._status === Status.Ready && isVersionNewer) {
+          this._editor.options.set('disabled', value);
+        }
+        if (value && !this.hasAttribute('disabled')) {
+          this.setAttribute('disabled', '');
+        } else if (!value && this.hasAttribute('disabled')) {
+          this.removeAttribute('disabled');
         }
       }
       get placeholder() {
