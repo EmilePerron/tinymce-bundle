@@ -1,0 +1,16 @@
+/.github                export-ignore
+/docs                   export-ignore
+/tests                  export-ignore
+/.editorconfig          export-ignore
+/.eslintignore          export-ignore
+/.eslintrc.json         export-ignore
+/.git*                  export-ignore
+/.php-cs-fixer.dist.php export-ignore
+/.phpmd.xml             export-ignore
+/.stylelintignore       export-ignore
+/.stylelintrc.json      export-ignore
+/package.json           export-ignore
+/package-lock.json      export-ignore
+/phpstan.neon           export-ignore
+/phpunit.xml            export-ignore
+/playwright.config.js   export-ignore
