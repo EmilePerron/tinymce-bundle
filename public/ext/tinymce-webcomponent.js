@@ -85,49 +85,6 @@
     };
     const ScriptLoader = CreateScriptLoader();
 
-    const toInt = str => parseInt(str, 10);
-    const cmp = (a, b) => {
-      const delta = a - b;
-      if (delta === 0) {
-        return 0;
-      }
-      return delta > 0 ? 1 : -1;
-    };
-    const nu = (major, minor, patch) => ({
-      major,
-      minor,
-      patch
-    });
-    const parse = versionString => {
-      const parts = /([0-9]+)\.([0-9]+)\.([0-9]+)(?:(\-.+)?)/.exec(versionString);
-      return parts ? nu(toInt(parts[1]), toInt(parts[2]), toInt(parts[3])) : nu(0, 0, 0);
-    };
-    const compare = (version1, version2) => {
-      const cmp1 = cmp(version1.major, version2.major);
-      if (cmp1 !== 0) {
-        return cmp1;
-      }
-      const cmp2 = cmp(version1.minor, version2.minor);
-      if (cmp2 !== 0) {
-        return cmp2;
-      }
-      const cmp3 = cmp(version1.patch, version2.patch);
-      if (cmp3 !== 0) {
-        return cmp3;
-      }
-      return 0;
-    };
-
-    const createSemVer = tinymce => {
-      const semver = [
-        tinymce.majorVersion,
-        tinymce.minorVersion
-      ].join('.');
-      return semver.split('.').slice(0, 3).join('.');
-    };
-    const getVersion = tinymce => parse(createSemVer(tinymce));
-    const isLessThan = (tinymce, version) => !tinymce ? false : compare(getVersion(tinymce), parse(version)) === -1;
-
     var Status;
     (function (Status) {
       Status[Status['Raw'] = 0] = 'Raw';
@@ -185,7 +142,10 @@
       promotion: parseBooleanOrString
     };
     const configRenames = {};
-    const isDisabledOptionSupported = tinymce => !isLessThan(tinymce, '7.6.0');
+    const isDisabledOptionSupported = editor => {
+      var _a;
+      return !!editor && typeof ((_a = editor.options) === null || _a === void 0 ? void 0 : _a.set) === 'function' && editor.options.isRegistered('disabled');
+    };
     class TinyMceEditor extends HTMLElement {
       static get formAssociated() {
         return true;
@@ -508,10 +468,7 @@
         return this._editor ? this._editor.options.get('disabled') : this.hasAttribute('disabled');
       }
       set disabled(value) {
-        var _a;
-        const tinymce = (_a = this._getTinymce) === null || _a === void 0 ? void 0 : _a.call(this);
-        const isVersionNewer = tinymce ? isDisabledOptionSupported(tinymce) : true;
-        if (this._editor && this._status === Status.Ready && isVersionNewer) {
+        if (this._editor && this._status === Status.Ready && isDisabledOptionSupported(this._editor)) {
           this._editor.options.set('disabled', value);
         }
         if (value && !this.hasAttribute('disabled')) {
